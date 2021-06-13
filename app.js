@@ -44,4 +44,49 @@ const iTetromino = [
 
 const theTetrominoes = [lTetromino,zTetromino,tTetromino,oTetromino,iTetromino]
 
+let currentPosition = 4
+let currentRotation = 0
+//randomly select a tetromino and it's first rotation
+
+let random= Math.floor(Math.random()*theTetrominoes.length)
+let current = theTetrominoes[random][currentRotation]
+//
+//drawing the first rotation for the first tetromino
+function draw() {
+    current.forEach(index => {
+        squares[currentPosition + index].classList.add('tetromino')
+    })
+}
+
+
+//undraw the Tetromino
+function undraw(){
+    current.forEach(index =>{
+        squares[currentPosition + index].classList.remove('tetromino')
+    })
+}
+
+//make the Tetromino move down every second
+timerId = setInterval(moveDown, 1000)
+
+//move down function
+function moveDown() {
+    undraw()
+    currentPosition += width
+    draw()
+    freeze()
+}
+
+//freeze statement
+function freeze() {
+    if(current.some(index => squares[currentPosition + index + width].classList.contains('taken'))) {
+        current.forEach(index => squares[currentPosition + index].classList.add('taken'))
+        //start new tetronminal falling
+        random = Math.floor(Math.random()* theTetrominoes.length)
+        current = theTetrominoes[random][currentRotation]
+        currentPosition = 4
+        draw()
+    }
+}
+
 })
